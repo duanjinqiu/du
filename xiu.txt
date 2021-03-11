@@ -4,3 +4,4 @@ zhangsan添加了three
 wanger添加了four
 zhangsan添加了five
 wanger添加了seven
+wanger添加了six
