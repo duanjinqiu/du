@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        // 发布订阅模式
+        // var message = {};
+        // function subscribe(type, callback) {
+        //     message[type] = callback;
+        // }
+        // function send(type, val) {
+        //     message[type] ? message[type](val) : '';
+        // }
+        // subscribe('giao', function (v) {
+        //     console.log(v);
+        // });
+        // send('giao', '吴');
+
+        // 观察者模式
+        class SubType {
+            constructor(name) {
+                this.name = name;
+                this.state = undefined;
+                this.observers = [];
+            }
+            addObserver(...args) {
+                this.observers = this.observers.concat(...args);
+            }
+            setState(state) {
+                this.state = state;
+                this.upInfo(state);
+            }
+            upInfo(state) {
+                this.observers.forEach(item => {
+                    item.update(name => {
+                        console.log(`${name}监视情况，目标任务-${this.name} => ${state}`);
+                    });
+                });
+            }
+        }
+
+        class Observer {
+            name = '';
+            constructor(name) {
+                this.name = name;
+            }
+            update(callback) {
+                callback && callback(this.name);
+            }
+        }
+        var p1 = new Observer('情报人员1');
+        // var p2 = new Observer('情报人员2');
+        var info = new SubType('监视沈放');
+        info.addObserver(p1);
+        // info.addObserver(p2);
+
+        info.setState('吃饭！');
+        info.setState('睡觉！');
+    </script>
+</body>
+
+</html>

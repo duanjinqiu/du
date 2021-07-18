@@ -10,19 +10,53 @@
 
 <body ng-controller="myCtrl">
     <!-- ios为什么不一样呢~ -->
-    <input type="number" ng-model="msg.text">
+    <form name="formEle">
+        <input type="text" name="phoneNum" id="inputEle" ng-model="msg.text" oninput="inputEvent(event)">
+        <!-- <div ng-show="formEle.phoneNum.$error.pattern">我是校验不通过显示的</div> -->
+    </form>
+    <xiyue ng-ref="giao"></xiyue>
+    <button ng-click="giao.toggle()">giao</button>
+    <div ng-show="giao.isOpen()">
+        You are using a component in the same template to show it.
+    </div>
     <div>
         {{msg.text}}
     </div>
-    <script src="../js/angular.min.js"></script>
+    <!-- <script src="../js/angular.min.js"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/angular.js/1.8.2/angular.js"></script>
     <script>
         angular.module('app', [])
             .controller('myCtrl', ['$scope', function ($scope) {
                 $scope.msg = {
                     text: ''
                 };
-            }]);
+                $scope.gugu = function (eg) {
+                    console.log(ge);
+                }
+                $scope.regex = /[0-9]/g;
+                $scope.changeEvent = function () {
+                    const a = angular.element(document.getElementById(inputEle));
+                    console.log(a);
+                    let value = $scope.msg.text;
+                    $scope.msg.text = value.replace(/[^0-9]/g, '');
+                    value = $scope.msg.text;
+                };
+                this.$onInit = function () {
+                    console.log(`onInit`);
+                }
+            }])
+            .component('xiyue', {
+                controller: function ToggleController() {
+                    var opened = false;
+                    this.isOpen = function () { return opened; };
+                    this.toggle = function () { opened = !opened; };
+                }
+            });
         angular.bootstrap(document.body, ['app']);
+
+        function inputEvent(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        }
     </script>
 </body>
 
