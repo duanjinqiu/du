@@ -61,8 +61,23 @@
         info.addObserver(p1);
         // info.addObserver(p2);
 
-        info.setState('吃饭！');
-        info.setState('睡觉！');
+        // info.setState('吃饭！');
+        // info.setState('睡觉！');
+
+        function* Gen() {
+            const d1 = yield 232;
+            console.log(`d1的返回值：${d1}`);
+            const d2 = yield 998;
+            console.log(`d2的返回值：${d2}`);
+            return '一切都已经结束了';
+        }
+        const gen = Gen();
+        const d1 = gen.next(); //{value: 232, done: false} 第一个next启动迭代器，不带参数的，有参数也会被忽略掉
+        console.log(d1);
+        const d2 = gen.next(d1.value); //{value: 998, done: false} 从第二个next开始,next方法的参数会作为上一个yield语句的返回值。比如此处上一个yield语句是："const d1 = yield 232;" ，所以d1对象的value值就是next的参数值
+        console.log(d2);
+        const d3 = gen.next(d2.value); //{value: '一切都已经结束了', done: true}
+        console.log(d3);
     </script>
 </body>
 
