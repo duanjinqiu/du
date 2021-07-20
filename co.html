@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>co.html</title>
+</head>
+
+<body>
+
+    <script>
+        function P(msg) {
+            return new Promise(resolve => setTimeout(() => resolve(msg), 1800))
+                .then(val => val);
+        }
+        function* Go() {
+            console.log(`第一个next运行了，表示内部的代码开始跑起来了,只有遇到yield才会暂停！！`);
+            console.log(yield P('总得说点什么吧'));
+            console.log(yield P('我说，我是老二，我永远是老二嘛'));
+            console.log(yield P('不是吧，老大，我是老三'));
+        }
+
+        function* Gen() {
+            const zui = yield 23;
+            console.log(zui);
+            const giao = yield 99;
+            console.log(giao);
+        }
+
+        function go() {
+            var gen = Gen();
+            var result = gen.next();
+            while (!result.done) {
+                console.log(result);
+                result = gen.next(result.value);
+            }
+        }
+
+        function Co(Gen) {
+            var gen = Gen();
+            function next(value) {
+                var step = gen.next(value);
+                if (step.done) {
+                    return step.value;
+                }
+                return Promise.resolve(step.value)
+                    .then((data) => {
+                        return next(data);
+                    });
+            }
+            next();
+        }
+
+        Co(Go);
+    </script>
+</body>
+
+</html>
